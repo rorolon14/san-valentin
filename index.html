@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Pregunta muy importante ❤️</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    overflow:hidden;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg,#ff758c,#ff7eb3);
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+/* Tarjeta */
+.card{
+    background:white;
+    padding:40px;
+    border-radius:20px;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    z-index:10;
+    width:80%;
+    max-width:500px;
+}
+
+h1{ color:#e91e63; }
+
+#frase{
+    margin-top:15px;
+    font-size:18px;
+    color:#555;
+    height:24px;
+}
+
+/* Botones */
+button{
+    padding:15px 30px;
+    font-size:18px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    position:fixed;
+    z-index:20;
+}
+
+#yesBtn{
+    background:#4CAF50;
+    color:white;
+    left:40%;
+    top:65%;
+}
+
+#noBtn{
+    background:#f44336;
+    color:white;
+    left:55%;
+    top:65%;
+}
+
+/* CARTEL FINAL */
+#pantallaFinal{
+    position:fixed;
+    top:50%;
+    left:50%;
+    transform:translate(-50%,-50%);
+    width:90%;
+    text-align:center;
+    font-size:7vw;
+    font-weight:bold;
+    color:#ff0000;
+    background:#ffd6e0;
+    padding:40px;
+    border-radius:25px;
+    display:none;
+    z-index:30;
+    box-shadow:0 0 40px rgba(255,0,0,0.4);
+}
+
+/* Cosas que caen */
+.falling{
+    position:fixed;
+    top:-5vh;
+    pointer-events:none;
+    animation:fall linear forwards;
+}
+
+@keyframes fall{
+    to{ transform:translateY(110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+    <h1>¿Querés ser mi cita el 14/02? ❤️</h1>
+    <div id="frase"></div>
+</div>
+
+<div id="pantallaFinal">Ya sé, soy re graciosa jaja te amo ❤️</div>
+
+<button id="yesBtn">Sí</button>
+<button id="noBtn">No</button>
+
+<script>
+const noBtn = document.getElementById("noBtn");
+const yesBtn = document.getElementById("yesBtn");
+const frase = document.getElementById("frase");
+const pantallaFinal = document.getElementById("pantallaFinal");
+
+let escala = 1;
+let lluviaActiva = false;
+
+const frases = [
+    "Probá con el verde 😉",
+    "Te estoy ayudando a elegir",
+    "No es por ahí",
+    "Cada vez que perseguís el NO muere un panda 🐼",
+    "Pobre panda, lo mataste",
+    "Me enojo y no hay más culo",
+    "Listooo, quedamos así",
+    "El que toca NO es infiel"
+];
+
+let indiceFrase = 0;
+
+const cosas = ["❤️","💍","💐","🥂","🐼","🦝","🔥","🫦","❤️‍🔥"];
+
+function moverNo(){
+    const maxX = window.innerWidth - noBtn.offsetWidth;
+    const maxY = window.innerHeight - noBtn.offsetHeight;
+
+    const x = Math.random()*maxX;
+    const y = Math.random()*maxY;
+
+    noBtn.style.left = x + "px";
+    noBtn.style.top = y + "px";
+
+    escala *= 0.9;
+    noBtn.style.transform = `scale(${escala})`;
+
+    frase.textContent = frases[indiceFrase];
+indiceFrase = (indiceFrase + 1) % frases.length;
+
+}
+
+noBtn.addEventListener("mouseover", moverNo);
+noBtn.addEventListener("click", moverNo);
+
+yesBtn.addEventListener("click", ()=>{
+    pantallaFinal.style.display="block";
+    lluviaActiva = true;
+});
+
+// Lluvia infinita
+function crearCosa(){
+    if(!lluviaActiva) return;
+
+    const elem = document.createElement("div");
+    elem.className="falling";
+    elem.innerHTML = cosas[Math.floor(Math.random()*cosas.length)];
+    elem.style.left = Math.random()*100+"vw";
+    elem.style.fontSize = (Math.random()*25+25)+"px";
+    elem.style.animationDuration = (Math.random()*2+3)+"s";
+
+    document.body.appendChild(elem);
+
+    setTimeout(()=>elem.remove(),5000);
+}
+
+setInterval(crearCosa,150);
+</script>
+
+</body>
+</html>
